@@ -5,6 +5,10 @@
 [functions]
   directory = "netlify/functions"
 
+# 00:00 UTC = 21:00 ART (Argentina no usa horario de verano).
+[functions."notificar-nocturno"]
+  schedule = "0 0 * * *"
+
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
