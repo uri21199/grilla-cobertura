@@ -57,6 +57,8 @@ Schema en `supabase/migrations/001_init.sql`, corrido a mano en el SQL Editor de
 
 - [x] Scaffolding (React + Vite + Tailwind + Supabase + gates de clave compartida)
 - [x] Función serverless de confirmación por token + página pública `/confirmar/:token`
-- [ ] Pantalla de Resumen (`vista_cobertura_dia`)
-- [ ] Admin (militantes, cursada, eje semanal)
-- [ ] Job nocturno + envío de mails (SendGrid)
+- [x] Pantalla de Resumen (`vista_cobertura_dia`, filtro Día/Semana)
+- [x] Admin (militantes, cursada, trabajo, eje semanal)
+- [x] Job nocturno + envío de mails (SendGrid) — `netlify/functions/notificar-nocturno.ts`, corre 21:00 ART
+
+Deploy en producción: **https://grilla-cobertura.netlify.app**
