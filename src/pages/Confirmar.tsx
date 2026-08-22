@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 interface ConfirmarData {
   nombre: string;
@@ -26,6 +26,7 @@ function formatFecha(fechaIso: string) {
 
 export function Confirmar() {
   const { token } = useParams<{ token: string }>();
+  const [searchParams] = useSearchParams();
   const [data, setData] = useState<ConfirmarData | null>(null);
   const [modo, setModo] = useState<Modo>('cargando');
   const [errorMsg, setErrorMsg] = useState('');
@@ -43,7 +44,16 @@ export function Confirmar() {
         setData(d);
         setHoraDesde(d.hora_desde?.slice(0, 5) ?? d.clases[0]?.hora_inicio.slice(0, 5) ?? '');
         setHoraHasta(d.hora_hasta?.slice(0, 5) ?? d.clases[0]?.hora_fin.slice(0, 5) ?? '');
-        setModo(d.yaRespondido ? 'listo' : 'elegir');
+
+        if (d.yaRespondido) {
+          setModo('listo');
+          return;
+        }
+
+        const r = searchParams.get('r');
+        if (r === 'no') enviar(false);
+        else if (r === 'si') setModo('horario');
+        else setModo('elegir');
       })
       .catch(() => setModo('error'));
   }, [token]);
