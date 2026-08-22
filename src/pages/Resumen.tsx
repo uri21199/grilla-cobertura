@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { supabase } from '../lib/supabase';
+import { addDays, formatDateLocal, formatFechaLarga, lunesDeLaSemana } from '../lib/dia';
 import type { VistaCoberturaDia } from '../types/db';
 
 interface Clase {
@@ -30,37 +31,6 @@ const ESTADO_INFO: Record<Estado, { label: string; className: string }> = {
 function estadoDe(n: NotificacionAgrupada): Estado {
   if (n.disponible === null) return 'pendiente';
   return n.disponible ? 'disponible' : 'no_disponible';
-}
-
-function formatDateLocal(d: Date): string {
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}-${m}-${day}`;
-}
-
-function addDays(fechaIso: string, dias: number): string {
-  const [y, m, d] = fechaIso.split('-').map(Number);
-  const date = new Date(y, m - 1, d);
-  date.setDate(date.getDate() + dias);
-  return formatDateLocal(date);
-}
-
-function lunesDeLaSemana(fechaIso: string): string {
-  const [y, m, d] = fechaIso.split('-').map(Number);
-  const date = new Date(y, m - 1, d);
-  const isoDow = date.getDay() === 0 ? 7 : date.getDay();
-  date.setDate(date.getDate() - (isoDow - 1));
-  return formatDateLocal(date);
-}
-
-function formatFechaLarga(fechaIso: string): string {
-  const [y, m, d] = fechaIso.split('-').map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString('es-AR', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-  });
 }
 
 function agruparPorFecha(filas: VistaCoberturaDia[]): Record<string, NotificacionAgrupada[]> {

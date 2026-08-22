@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
+import { formatFechaLarga } from '../lib/dia';
 
 interface ConfirmarData {
   nombre: string;
@@ -13,16 +14,6 @@ interface ConfirmarData {
 }
 
 type Modo = 'cargando' | 'error' | 'elegir' | 'horario' | 'enviando' | 'listo';
-
-function formatFecha(fechaIso: string) {
-  const [y, m, d] = fechaIso.split('-').map(Number);
-  return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString('es-AR', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    timeZone: 'UTC',
-  });
-}
 
 export function Confirmar() {
   const { token } = useParams<{ token: string }>();
@@ -110,7 +101,7 @@ export function Confirmar() {
     <Layout>
       <h1 className="text-lg font-semibold text-slate-800">Hola, {data.nombre} 👋</h1>
       <p className="mt-2 text-sm text-slate-600">
-        Mañana <span className="font-medium">{formatFecha(data.fecha)}</span>
+        Mañana <span className="font-medium">{formatFechaLarga(data.fecha)}</span>
         {claseTexto ? (
           <>
             {' '}tenés <span className="font-medium">{claseTexto}</span>.
