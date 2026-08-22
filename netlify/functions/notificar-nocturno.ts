@@ -26,7 +26,8 @@ export const handler: Handler = async () => {
   // Sábado y domingo no hay mesita: no se notifica a nadie, ni siquiera a
   // quien no tiene horario cargado.
   if (diaManana === 'Sabado' || diaManana === 'Domingo') {
-    return { statusCode: 200, body: JSON.stringify({ fecha: manana, dia: diaManana, candidatos: 0, enviados: 0 }) };
+    console.log(`notificar-nocturno: ${manana} (${diaManana}) — sin mesita, no se notifica.`);
+    return { statusCode: 200 };
   }
 
   const [{ data: militantes }, { data: cursadas }, { data: trabajos }, { data: yaNotificados }] = await Promise.all([
@@ -55,8 +56,8 @@ export const handler: Handler = async () => {
   const resultados = await Promise.allSettled(candidatos.map((m) => crearYNotificar(m.id, manana)));
   const enviados = resultados.filter((r) => r.status === 'fulfilled' && r.value.ok).length;
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ fecha: manana, dia: diaManana, candidatos: candidatos.length, enviados }),
-  };
+  console.log(
+    `notificar-nocturno: ${manana} (${diaManana}) — ${candidatos.length} candidatos, ${enviados} mails enviados.`,
+  );
+  return { statusCode: 200 };
 };
