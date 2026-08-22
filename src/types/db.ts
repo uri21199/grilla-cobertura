@@ -33,6 +33,15 @@ export interface CursadaMilitante {
   hora_fin: string;
 }
 
+// Informativo: no dispara notificaciones, el trigger de la mesita es la cursada.
+export interface TrabajoMilitante {
+  id: string;
+  militante_id: string;
+  dia: DiaSemana;
+  hora_inicio: string;
+  hora_fin: string;
+}
+
 export interface EjeSemanal {
   id: string;
   semana: string; // lunes de la semana, formato date (YYYY-MM-DD)
